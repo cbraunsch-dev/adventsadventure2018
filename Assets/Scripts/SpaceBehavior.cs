@@ -5,6 +5,8 @@ using UnityEngine;
 public class SpaceBehavior : MonoBehaviour {
     public GameObject previousSpace;
     public GameObject nextSpace;
+    public SpaceEvent triggeredEvent;
+    public bool visited;
 
 	// Use this for initialization
 	void Start () {

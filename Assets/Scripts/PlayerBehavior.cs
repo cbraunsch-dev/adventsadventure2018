@@ -8,11 +8,13 @@ public class PlayerBehavior : MonoBehaviour {
 
     private GameObject currentSpace;
     private Vector3 targetPosition;
+    private Inventory inventory;
 
 	// Use this for initialization
 	void Start () {
         this.currentSpace = startingSpace;
         SetPositionAsTarget(this.currentSpace);
+        this.inventory = GetComponent<Inventory>();
     }
 	
 	// Update is called once per frame
@@ -57,4 +59,27 @@ public class PlayerBehavior : MonoBehaviour {
 		// Move our position a step closer to the target
         transform.position = Vector3.MoveTowards(transform.position, position, step);
     }
+
+	void OnTriggerEnter(Collider other)
+	{
+        var spaceBehavior = other.gameObject.GetComponent<SpaceBehavior>();
+        if (spaceBehavior != null)
+        {
+            if (!spaceBehavior.visited)
+            {
+                var spaceEvent = spaceBehavior.triggeredEvent;
+                switch (spaceEvent)
+                {
+                    case SpaceEvent.earnMoney:
+                        this.inventory.CollectMoney(10);
+                        break;
+                    case SpaceEvent.loseMoney:
+                        this.inventory.SpendMoney(10);
+                        break;
+                }
+                this.inventory.Print();
+                spaceBehavior.visited = true;
+            }
+        }
+	}
 }

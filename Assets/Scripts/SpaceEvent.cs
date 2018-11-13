@@ -1,5 +1,6 @@
 ﻿public enum SpaceEvent
 {
     earnMoney,
-    loseMoney
+    loseMoney,
+    visitStore
 };

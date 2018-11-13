@@ -76,6 +76,10 @@ public class PlayerBehavior : MonoBehaviour {
                     case SpaceEvent.loseMoney:
                         this.inventory.SpendMoney(10);
                         break;
+                    case SpaceEvent.visitStore:
+                        var store = spaceBehavior.store.GetComponent<StoreBehavior>();
+                        store.ShowMessage();
+                        break;
                 }
                 this.inventory.Print();
                 spaceBehavior.visited = true;

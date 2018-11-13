@@ -7,6 +7,7 @@ public class SpaceBehavior : MonoBehaviour {
     public GameObject nextSpace;
     public SpaceEvent triggeredEvent;
     public bool visited;
+    public GameObject store;
 
 	// Use this for initialization
 	void Start () {

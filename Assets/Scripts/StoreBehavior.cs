@@ -11,6 +11,7 @@ public class StoreBehavior : MonoBehaviour {
 	void Start () {
         var textWithActions = GameObject.FindWithTag(Tags.CanvasWithActions);
         this.canvasBehavior = textWithActions.GetComponent<CanvasWithActionsBehavior>();
+        textWithActions.SetActive(false);
 	}
 
     public void ShowMessage() {

@@ -16,6 +16,7 @@ public class CanvasWithActionsBehavior : MonoBehaviour {
 	}
 
     public void Show(string name, string text) {
+        this.gameObject.SetActive(true);
         var nameLabel = GameObject.FindWithTag(Tags.CanvasWithActionsName);
         nameLabel.GetComponent<Text>().text = name;
         var messageLabel = GameObject.FindWithTag(Tags.CanvasWithActionsText);

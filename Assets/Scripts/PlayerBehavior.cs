@@ -86,4 +86,13 @@ public class PlayerBehavior : MonoBehaviour {
             }
         }
 	}
+
+    public void Buy(int itemIndex) {
+        var item = ItemCreator.CreateItem(itemIndex);
+        this.inventory.BuyItem(item);
+    }
+
+    public void Clicky() {
+        Debug.Log("Clicky");
+    }
 }

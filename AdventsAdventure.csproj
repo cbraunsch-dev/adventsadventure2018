@@ -107,6 +107,7 @@
     <Compile Include="Assets\Scripts\CameraBehavior.cs" />
     <Compile Include="Assets\Scripts\CanvasWithActionsBehavior.cs" />
     <Compile Include="Assets\Scripts\Inventory.cs" />
+    <Compile Include="Assets\Scripts\Items.cs" />
     <Compile Include="Assets\Scripts\PlayerBehavior.cs" />
     <Compile Include="Assets\Scripts\SpaceBehavior.cs" />
     <Compile Include="Assets\Scripts\SpaceEvent.cs" />

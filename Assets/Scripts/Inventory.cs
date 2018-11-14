@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Inventory: MonoBehaviour {
     private int money;
+    private List<Item> items = new List<Item>();
 
     public void CollectMoney(int money) {
         this.money += money;
@@ -14,7 +15,14 @@ public class Inventory: MonoBehaviour {
         this.money -= money;
     }
 
+    public void BuyItem(Item item) {
+        var itemCost = item.Cost;
+		this.SpendMoney(itemCost);
+        this.items.Add(item);
+        this.Print();
+    }
+
     public void Print() {
-        Debug.Log(">Inventory - Money: " + this.money + "<");
+        Debug.Log(">Inventory - Money: " + this.money + ". Nr. of items: " + this.items.Count + "<");
     }
 }

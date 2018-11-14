@@ -15,4 +15,8 @@ public class StoreBehavior : MonoBehaviour {
     public void ShowMessage() {
         this.canvasBehavior.Show();
     }
+
+    public void HideMessage() {
+        this.canvasBehavior.Hide();
+    }
 }

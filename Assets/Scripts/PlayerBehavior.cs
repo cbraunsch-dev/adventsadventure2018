@@ -91,8 +91,4 @@ public class PlayerBehavior : MonoBehaviour {
         var item = ItemCreator.CreateItem(itemIndex);
         this.inventory.BuyItem(item);
     }
-
-    public void Clicky() {
-        Debug.Log("Clicky");
-    }
 }

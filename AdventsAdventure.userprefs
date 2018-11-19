@@ -1,10 +1,15 @@
 ﻿<Properties StartupConfiguration="{9A4F60F8-D775-969F-EF32-ACB4D3005B71}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MovementMechanic/MechanicManagerBehavior.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ApplicationModel.cs">
     <Files>
-      <File FileName="Assets/Scripts/MovementMechanic/MechanicManagerBehavior.cs" Line="25" Column="76" />
+      <File FileName="Assets/Scripts/MovementMechanic/MechanicManagerBehavior.cs" Line="59" Column="87" />
       <File FileName="Assets/Scripts/MovementMechanic/ParticleBehavior.cs" Line="20" Column="98" />
       <File FileName="Assets/Scripts/MovementMechanic/VisorLeftSideBehavior.cs" Line="12" Column="3" />
       <File FileName="Assets/Scripts/MovementMechanic/VisorRightSideBehavior.cs" Line="16" Column="45" />
+      <File FileName="Assets/Scripts/GameLauncherBehavior.cs" Line="4" Column="35" />
+      <File FileName="Assets/Scripts/GameInitializerBehavior.cs" Line="9" Column="32" />
+      <File FileName="Assets/Scripts/GameManagerBehavior.cs" Line="9" Column="51" />
+      <File FileName="Assets/Scripts/Constants.cs" Line="8" Column="56" />
+      <File FileName="Assets/Scripts/ApplicationModel.cs" Line="6" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

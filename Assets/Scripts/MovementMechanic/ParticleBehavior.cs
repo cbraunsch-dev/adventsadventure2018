@@ -18,6 +18,6 @@ public class ParticleBehavior : MonoBehaviour {
 	{
         transform.RotateAround(center.position, Vector3.forward, rotationSpeed * Time.deltaTime);
 		desiredPosition = (transform.position - center.position).normalized * radius + center.position;
-		transform.position = Vector3.MoveTowards(transform.position, desiredPosition, Time.deltaTime * radiusSpeed);
+        transform.position = desiredPosition;
 	}
 }

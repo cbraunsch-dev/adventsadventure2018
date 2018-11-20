@@ -82,18 +82,20 @@ public class PlayerBehavior : MonoBehaviour {
                 {
                     case SpaceEvent.earnMoney:
                         this.Inventory.CollectMoney(10);
+                        spaceBehavior.visited = true;
+                        this.gameManager.VisitedSpace(other.gameObject);
                         break;
                     case SpaceEvent.loseMoney:
                         this.Inventory.SpendMoney(10);
+                        spaceBehavior.visited = true;
+                        this.gameManager.VisitedSpace(other.gameObject);
                         break;
                     case SpaceEvent.visitStore:
                         var store = spaceBehavior.store.GetComponent<StoreBehavior>();
                         store.ShowMessage();
                         break;
                 }
-                spaceBehavior.visited = true;
                 this.PrintInventory();
-                this.gameManager.VisitedSpace(other.gameObject);
             }
         }
 	}
@@ -105,5 +107,6 @@ public class PlayerBehavior : MonoBehaviour {
     public void Buy(int itemIndex) {
         var item = ItemCreator.CreateItem(itemIndex);
         this.Inventory.BuyItem(item);
+        this.PrintInventory();
     }
 }

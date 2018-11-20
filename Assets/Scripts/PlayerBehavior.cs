@@ -20,7 +20,10 @@ public class PlayerBehavior : MonoBehaviour {
 	void Start () {
         this.currentSpace = startingSpace;
         SetPositionAsTarget(this.currentSpace);
-        this.Inventory = new Inventory();
+        if (this.Inventory == null)
+        {
+            this.Inventory = new Inventory();
+        }
         this.gameManager = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
     }
 	

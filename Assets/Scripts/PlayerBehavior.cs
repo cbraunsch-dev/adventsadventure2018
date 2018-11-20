@@ -5,16 +5,23 @@ using UnityEngine;
 public class PlayerBehavior : MonoBehaviour {
     public GameObject startingSpace;
     public float speed = 5;
+    public Inventory Inventory { get; private set; }
 
     private GameObject currentSpace;
     private Vector3 targetPosition;
-    private Inventory inventory;
+    private GameManagerBehavior gameManager;
+
+    public void LoadInventory(Inventory inventory) {
+        this.Inventory = inventory;
+        this.PrintInventory();
+    }
 
 	// Use this for initialization
 	void Start () {
         this.currentSpace = startingSpace;
         SetPositionAsTarget(this.currentSpace);
-        this.inventory = GetComponent<Inventory>();
+        this.Inventory = new Inventory();
+        this.gameManager = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
     }
 	
 	// Update is called once per frame
@@ -71,24 +78,29 @@ public class PlayerBehavior : MonoBehaviour {
                 switch (spaceEvent)
                 {
                     case SpaceEvent.earnMoney:
-                        this.inventory.CollectMoney(10);
+                        this.Inventory.CollectMoney(10);
                         break;
                     case SpaceEvent.loseMoney:
-                        this.inventory.SpendMoney(10);
+                        this.Inventory.SpendMoney(10);
                         break;
                     case SpaceEvent.visitStore:
                         var store = spaceBehavior.store.GetComponent<StoreBehavior>();
                         store.ShowMessage();
                         break;
                 }
-                this.inventory.Print();
                 spaceBehavior.visited = true;
+                this.PrintInventory();
+                this.gameManager.VisitedSpace(other.gameObject);
             }
         }
 	}
 
+    private void PrintInventory() {
+        Debug.Log("Money: " + this.Inventory.Money + " Nr. of items: " + this.Inventory.Items.Count);
+    }
+
     public void Buy(int itemIndex) {
         var item = ItemCreator.CreateItem(itemIndex);
-        this.inventory.BuyItem(item);
+        this.Inventory.BuyItem(item);
     }
 }

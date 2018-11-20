@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Inventory: MonoBehaviour {
-    private int money;
-    private List<Item> items = new List<Item>();
+[Serializable]
+public class Inventory {
+    public int Money { get; private set; }
+    public List<Item> Items { get; private set; }
+
+    public Inventory() {
+        this.Items = new List<Item>();
+    }
 
     public void CollectMoney(int money) {
-        this.money += money;
+        this.Money += money;
     }
 
     public void SpendMoney(int money) {
-        this.money -= money;
+        this.Money -= money;
     }
 
     public void BuyItem(Item item) {
         var itemCost = item.Cost;
 		this.SpendMoney(itemCost);
-        this.items.Add(item);
-        this.Print();
-    }
-
-    public void Print() {
-        Debug.Log(">Inventory - Money: " + this.money + ". Nr. of items: " + this.items.Count + "<");
+        this.Items.Add(item);
     }
 }

@@ -20,6 +20,7 @@ public interface Item {
     void Use();
 }
 
+[Serializable]
 public class LuckyShroom : Item
 {
     public int Cost

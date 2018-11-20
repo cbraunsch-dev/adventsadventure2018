@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class StoreBehavior : MonoBehaviour {
     private CanvasWithActionsBehavior canvasBehavior;
+    private GameObject visitor;
+
+    public GameObject associatedSpace;
 
 	// Use this for initialization
 	void Start () {
@@ -12,11 +15,19 @@ public class StoreBehavior : MonoBehaviour {
         textWithActions.SetActive(false);
 	}
 
-    public void ShowMessage() {
+    public void ShowMessage(GameObject visitor) {
+        this.visitor = visitor;
         this.canvasBehavior.Show();
     }
 
+	public void Buy(int itemIndex)
+	{
+        this.visitor.GetComponent<PlayerBehavior>().Buy(itemIndex);
+        this.HideMessage();
+	}
+
     public void HideMessage() {
+        this.visitor.GetComponent<PlayerBehavior>().FinishVisit(associatedSpace);
         this.canvasBehavior.Hide();
     }
 }

@@ -14,6 +14,7 @@ public class GameInitializerBehavior : MonoBehaviour {
                 Debug.Log("Load game");
                 var gameManager = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
                 var loadedGame = gameManager.LoadGame();
+                this.MoveCameraToSavedLocation(loadedGame);
                 var player = GameObject.FindWithTag(Tags.Player);
                 var playerBehavior = player.GetComponent<PlayerBehavior>();
                 this.MovePlayerToSavedSpace(player, loadedGame);
@@ -22,12 +23,26 @@ public class GameInitializerBehavior : MonoBehaviour {
         }
 	}
 
+    private void MoveCameraToSavedLocation(GameState gameState) {
+        var mainCamera = GameObject.FindWithTag(Tags.MainCamera);
+        mainCamera.transform.position = new Vector3(gameState.cameraPositionX, gameState.cameraPositionY, gameState.cameraPositionZ);
+    }
+
     private void MovePlayerToSavedSpace(GameObject player, GameState gameState) {
         var space = GameObject.Find(gameState.nameOfCurrentSpace);
         player.GetComponent<PlayerBehavior>().startingSpace = space;
         player.transform.position = new Vector3(gameState.playerPositionX, gameState.playerPositionY, gameState.playerPositionZ);
 
-        //TODO: Mark spaces as 'visited'
+        //Mark spaces as 'visited'
+        this.VisitedSpace(space.GetComponent<SpaceBehavior>());
+    }
+
+    private void VisitedSpace(SpaceBehavior spaceBehavior) {
+		spaceBehavior.visited = true;
+		if (spaceBehavior.previousSpace != null)
+		{
+            this.VisitedSpace(spaceBehavior.previousSpace.GetComponent<SpaceBehavior>());
+		}
     }
 	
 	// Update is called once per frame

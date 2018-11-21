@@ -118,6 +118,7 @@
     <Compile Include="Assets\Scripts\MovementMechanic\VisorLeftSideBehavior.cs" />
     <Compile Include="Assets\Scripts\MovementMechanic\VisorRightSideBehavior.cs" />
     <Compile Include="Assets\Scripts\PlayerBehavior.cs" />
+    <Compile Include="Assets\Scripts\Scenes.cs" />
     <Compile Include="Assets\Scripts\SpaceBehavior.cs" />
     <Compile Include="Assets\Scripts\SpaceEvent.cs" />
     <Compile Include="Assets\Scripts\StoreBehavior.cs" />

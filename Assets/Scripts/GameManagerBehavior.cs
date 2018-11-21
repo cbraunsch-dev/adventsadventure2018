@@ -10,9 +10,39 @@ public class GameManagerBehavior : MonoBehaviour {
     private const string saveGameFilename = "/SavedGame.dat";
     private int numberOfTurnsRemaining = 0; //TODO: implement this
     private string nameOfCurrentSpace;
+    private GameState gameState;
+
+	private static GameManagerBehavior instance = null;
+	
+    void Awake()
+	{
+		if (instance == null)
+		{
+			instance = this;
+			DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
+		}
+		else if (instance != this)
+		{
+			Destroy(this.gameObject);
+			return;
+		}
+	}
+
+	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	{
+        if(scene.name == Scenes.GameBoard && gameState != null) {
+            this.ApplyGameState();
+        }
+	}
 
     public void TryToMove() {
         SceneManager.LoadScene(SceneNames.Movement);    
+    }
+
+    public void PlayerEarnedMovementScore(int score) {
+        Debug.Log("Player earned score: " + score);
+        SceneManager.LoadScene(SceneNames.GameBoard);
     }
 
     public void VisitedSpace(GameObject space) {
@@ -21,13 +51,22 @@ public class GameManagerBehavior : MonoBehaviour {
         this.SaveGame(player);
     }
 
+    public void LoadGame()
+    {
+        this.gameState = this.LoadGameStateFromFile();
+        ApplyGameState();
+    }
+
     private void SaveGame(GameObject player) {
         var filename = Application.persistentDataPath + saveGameFilename;
         //Debug.Log("Saving file to: " + filename);
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Open(filename, FileMode.OpenOrCreate);
 
-        var gameState = new GameState();
+		if (gameState == null)
+		{
+			gameState = new GameState();
+		}
         var mainCamera = GameObject.FindWithTag(Tags.MainCamera);
         gameState.numberOfTurnsRemaining = this.numberOfTurnsRemaining;
         gameState.nameOfCurrentSpace = this.nameOfCurrentSpace;
@@ -45,21 +84,57 @@ public class GameManagerBehavior : MonoBehaviour {
         file.Close();
     }
 
-    public GameState LoadGame() {
+	private void ApplyGameState()
+	{
+        if(gameState != null) {
+			this.MoveCameraToSavedLocation(this.gameState);
+			var player = GameObject.FindWithTag(Tags.Player);
+			var playerBehavior = player.GetComponent<PlayerBehavior>();
+			this.MovePlayerToSavedSpace(player, this.gameState);
+			playerBehavior.LoadInventory(this.gameState.playerInventory);    
+        }
+	}
+
+    private GameState LoadGameStateFromFile() {
         var filename = Application.persistentDataPath + saveGameFilename;
         if(File.Exists(filename)) {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(filename, FileMode.Open);
-            var gameState = (GameState)bf.Deserialize(file);
+            var loadedGameState = (GameState)bf.Deserialize(file);
             file.Close();
 
-            this.numberOfTurnsRemaining = gameState.numberOfTurnsRemaining;
-            this.nameOfCurrentSpace = gameState.nameOfCurrentSpace;
+            this.numberOfTurnsRemaining = loadedGameState.numberOfTurnsRemaining;
+            this.nameOfCurrentSpace = loadedGameState.nameOfCurrentSpace;
 
-            return gameState;
+            return loadedGameState;
         }
         return null;
     }
+
+	private void MoveCameraToSavedLocation(GameState gameState)
+	{
+		var mainCamera = GameObject.FindWithTag(Tags.MainCamera);
+		mainCamera.transform.position = new Vector3(gameState.cameraPositionX, gameState.cameraPositionY, gameState.cameraPositionZ);
+	}
+
+	private void MovePlayerToSavedSpace(GameObject player, GameState gameState)
+	{
+		var space = GameObject.Find(gameState.nameOfCurrentSpace);
+		player.GetComponent<PlayerBehavior>().startingSpace = space;
+		player.transform.position = new Vector3(gameState.playerPositionX, gameState.playerPositionY, gameState.playerPositionZ);
+
+		//Mark spaces as 'visited'
+		this.VisitedSpace(space.GetComponent<SpaceBehavior>());
+	}
+
+	private void VisitedSpace(SpaceBehavior spaceBehavior)
+	{
+		spaceBehavior.visited = true;
+		if (spaceBehavior.previousSpace != null)
+		{
+			this.VisitedSpace(spaceBehavior.previousSpace.GetComponent<SpaceBehavior>());
+		}
+	}
 }
 
 [Serializable]

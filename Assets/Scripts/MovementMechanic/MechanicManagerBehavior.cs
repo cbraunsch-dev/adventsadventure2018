@@ -15,6 +15,7 @@ public class MechanicManagerBehavior : MonoBehaviour
     private bool insideVisor = false;
     private const float maxRadius = 2.5f;
     private const int initialRadius = 1;
+    private int score = 1;
 
     public GameObject visor;
     public GameObject particle;
@@ -26,6 +27,7 @@ public class MechanicManagerBehavior : MonoBehaviour
         if (Input.GetKeyDown("space") && insideVisor)
         {
             Debug.Log("Nice! Next level!");
+            score++;
             this.insideVisor = false;
             if(particle.GetComponent<ParticleBehavior>().radius < maxRadius) {
                 this.Grow();
@@ -36,6 +38,8 @@ public class MechanicManagerBehavior : MonoBehaviour
         else if (Input.GetKeyDown("space"))
         {
             Debug.Log("Sorry! Try again!");
+            var gameManagerBehavior = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
+            gameManagerBehavior.PlayerEarnedMovementScore(this.score);
         }
     }
 

@@ -132,7 +132,7 @@ public class GameManagerBehavior : MonoBehaviour {
 	private void MovePlayerToSavedSpace(GameObject player, GameState gameState)
 	{
 		var space = GameObject.Find(gameState.nameOfCurrentSpace);
-		player.GetComponent<PlayerBehavior>().startingSpace = space;
+        player.GetComponent<PlayerBehavior>().PlacePlayerAtSpace(space);
 		player.transform.position = new Vector3(gameState.playerPositionX, gameState.playerPositionY, gameState.playerPositionZ);
 
 		//Mark spaces as 'visited'

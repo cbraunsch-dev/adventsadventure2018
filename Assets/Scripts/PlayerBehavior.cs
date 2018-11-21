@@ -11,20 +11,37 @@ public class PlayerBehavior : MonoBehaviour {
     private Vector3 targetPosition;
     private GameManagerBehavior gameManager;
     private int numberOfMovesToMake = 0;
+    private GameObject destination;
 
     public void LoadInventory(Inventory inventory) {
         this.Inventory = inventory;
         this.PrintInventory();
     }
 
+    public void PlacePlayerAtSpace(GameObject space) {
+		startingSpace = space;
+        currentSpace = space;
+    }
+
     public void ScheduleMovement(int numberOfMoves) {
         this.numberOfMovesToMake = numberOfMoves;
+        this.destination = FindDestination(numberOfMoves, currentSpace);
+    }
+
+    private GameObject FindDestination(int numberOfMoves, GameObject space) {
+        if (numberOfMoves > 0 && space.GetComponent<SpaceBehavior>().nextSpace != null) {
+            return FindDestination(numberOfMoves - 1, space.GetComponent<SpaceBehavior>().nextSpace);
+        }
+        return space;
     }
 
 	// Use this for initialization
 	void Start () {
         this.currentSpace = startingSpace;
         SetPositionAsTarget(this.currentSpace);
+        if(this.destination == null) {
+            this.destination = startingSpace;
+        }
         if (this.Inventory == null)
         {
             this.Inventory = new Inventory();
@@ -89,28 +106,31 @@ public class PlayerBehavior : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-        var spaceBehavior = other.gameObject.GetComponent<SpaceBehavior>();
-        if (spaceBehavior != null)
+        if (other.gameObject == this.destination)
         {
-            if (!spaceBehavior.visited)
+            var spaceBehavior = other.gameObject.GetComponent<SpaceBehavior>();
+            if (spaceBehavior != null)
             {
-                var spaceEvent = spaceBehavior.triggeredEvent;
-                switch (spaceEvent)
+                if (!spaceBehavior.visited)
                 {
-                    case SpaceEvent.earnMoney:
-                        this.Inventory.CollectMoney(10);
-                        this.FinishVisit(other.gameObject);
-                        break;
-                    case SpaceEvent.loseMoney:
-                        this.Inventory.SpendMoney(10);
-                        this.FinishVisit(other.gameObject);
-                        break;
-                    case SpaceEvent.visitStore:
-                        var store = spaceBehavior.store.GetComponent<StoreBehavior>();
-                        store.ShowMessage(this.gameObject);
-                        break;
+                    var spaceEvent = spaceBehavior.triggeredEvent;
+                    switch (spaceEvent)
+                    {
+                        case SpaceEvent.earnMoney:
+                            this.Inventory.CollectMoney(10);
+                            this.FinishVisit(other.gameObject);
+                            break;
+                        case SpaceEvent.loseMoney:
+                            this.Inventory.SpendMoney(10);
+                            this.FinishVisit(other.gameObject);
+                            break;
+                        case SpaceEvent.visitStore:
+                            var store = spaceBehavior.store.GetComponent<StoreBehavior>();
+                            store.ShowMessage(this.gameObject);
+                            break;
+                    }
+                    this.PrintInventory();
                 }
-                this.PrintInventory();
             }
         }
 	}

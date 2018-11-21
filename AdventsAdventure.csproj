@@ -113,6 +113,7 @@
     <Compile Include="Assets\Scripts\GameManagerBehavior.cs" />
     <Compile Include="Assets\Scripts\Inventory.cs" />
     <Compile Include="Assets\Scripts\Items.cs" />
+    <Compile Include="Assets\Scripts\MovementCanvasBehavior.cs" />
     <Compile Include="Assets\Scripts\MovementMechanic\MechanicManagerBehavior.cs" />
     <Compile Include="Assets\Scripts\MovementMechanic\ParticleBehavior.cs" />
     <Compile Include="Assets\Scripts\MovementMechanic\VisorLeftSideBehavior.cs" />

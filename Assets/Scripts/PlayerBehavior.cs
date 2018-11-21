@@ -10,10 +10,15 @@ public class PlayerBehavior : MonoBehaviour {
     private GameObject currentSpace;
     private Vector3 targetPosition;
     private GameManagerBehavior gameManager;
+    private int numberOfMovesToMake = 0;
 
     public void LoadInventory(Inventory inventory) {
         this.Inventory = inventory;
         this.PrintInventory();
+    }
+
+    public void ScheduleMovement(int numberOfMoves) {
+        this.numberOfMovesToMake = numberOfMoves;
     }
 
 	// Use this for initialization
@@ -29,14 +34,26 @@ public class PlayerBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
     void Update () {
+        //The movement using the keyboard is just for testing and debugging. Remove/disable for final build
         if (Input.GetKeyDown("d")) {
             MoveToNextSpace(this.currentSpace);
         } else if (Input.GetKeyDown("a")) {
             MoveToPreviousSpace(this.currentSpace);
         }
 
-        //Move towards target
+        Move(this.numberOfMovesToMake);
+        this.numberOfMovesToMake = 0;
+
         MoveTowards(targetPosition);
+	}
+
+	private void Move(int numberOfMoves)
+	{
+		if (numberOfMoves > 0)
+		{
+			this.MoveToNextSpace(this.currentSpace);
+			this.Move(numberOfMoves - 1);
+		}
 	}
 
     void MoveToNextSpace(GameObject space) {

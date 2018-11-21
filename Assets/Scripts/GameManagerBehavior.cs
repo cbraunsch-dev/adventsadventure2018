@@ -11,6 +11,7 @@ public class GameManagerBehavior : MonoBehaviour {
     private int numberOfTurnsRemaining = 0; //TODO: implement this
     private string nameOfCurrentSpace;
     private GameState gameState;
+    private int numberOfMovesPlayerEarned = 0;
 
 	private static GameManagerBehavior instance = null;
 	
@@ -31,10 +32,19 @@ public class GameManagerBehavior : MonoBehaviour {
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-        if(scene.name == Scenes.GameBoard && gameState != null) {
+        if(scene.name == Scenes.GameBoard && gameState != null)
+        {
             this.ApplyGameState();
+            MovePlayerAccordingToEarnedScore();
         }
-	}
+    }
+
+    private void MovePlayerAccordingToEarnedScore()
+    {
+        var player = GameObject.FindWithTag(Tags.Player);
+        player.GetComponent<PlayerBehavior>().ScheduleMovement(this.numberOfMovesPlayerEarned);
+        this.numberOfMovesPlayerEarned = 0;
+    }
 
     public void TryToMove() {
         SceneManager.LoadScene(SceneNames.Movement);    
@@ -42,6 +52,7 @@ public class GameManagerBehavior : MonoBehaviour {
 
     public void PlayerEarnedMovementScore(int score) {
         Debug.Log("Player earned score: " + score);
+        this.numberOfMovesPlayerEarned = score;
         SceneManager.LoadScene(SceneNames.GameBoard);
     }
 
@@ -84,17 +95,6 @@ public class GameManagerBehavior : MonoBehaviour {
         file.Close();
     }
 
-	private void ApplyGameState()
-	{
-        if(gameState != null) {
-			this.MoveCameraToSavedLocation(this.gameState);
-			var player = GameObject.FindWithTag(Tags.Player);
-			var playerBehavior = player.GetComponent<PlayerBehavior>();
-			this.MovePlayerToSavedSpace(player, this.gameState);
-			playerBehavior.LoadInventory(this.gameState.playerInventory);    
-        }
-	}
-
     private GameState LoadGameStateFromFile() {
         var filename = Application.persistentDataPath + saveGameFilename;
         if(File.Exists(filename)) {
@@ -110,6 +110,18 @@ public class GameManagerBehavior : MonoBehaviour {
         }
         return null;
     }
+
+	private void ApplyGameState()
+	{
+		if (gameState != null)
+		{
+			this.MoveCameraToSavedLocation(this.gameState);
+			var player = GameObject.FindWithTag(Tags.Player);
+			var playerBehavior = player.GetComponent<PlayerBehavior>();
+			this.MovePlayerToSavedSpace(player, this.gameState);
+			playerBehavior.LoadInventory(this.gameState.playerInventory);
+		}
+	}
 
 	private void MoveCameraToSavedLocation(GameState gameState)
 	{

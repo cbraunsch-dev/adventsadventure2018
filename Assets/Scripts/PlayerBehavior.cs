@@ -140,6 +140,9 @@ public class PlayerBehavior : MonoBehaviour {
                             var cutscene = spaceBehavior.cutscene.GetComponent<CutsceneBehavior>();
                             cutscene.ShowMessage(this.gameObject);
                             break;
+                        case SpaceEvent.finalEvent:
+                            spaceBehavior.HandleFinalEvent(this.gameObject, this.Inventory.Money);
+                            break;
                     }
                     this.PrintInventory();
                 }

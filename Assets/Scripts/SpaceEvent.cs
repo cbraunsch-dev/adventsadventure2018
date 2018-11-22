@@ -3,5 +3,6 @@
     earnMoney,
     loseMoney,
     visitStore,
-    triggerCutscene
+    triggerCutscene,
+    finalEvent
 };

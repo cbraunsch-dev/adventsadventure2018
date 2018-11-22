@@ -14,6 +14,8 @@ public class GameManagerBehavior : MonoBehaviour {
     private int numberOfMovesPlayerEarned = 0;
 
 	private static GameManagerBehavior instance = null;
+
+    public int amountOfMoneyNeededToWin = 120;
 	
     void Awake()
 	{

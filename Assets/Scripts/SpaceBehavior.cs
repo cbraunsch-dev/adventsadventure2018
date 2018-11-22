@@ -9,6 +9,8 @@ public class SpaceBehavior : MonoBehaviour {
     public bool visited;
     public GameObject store;
     public GameObject cutscene;
+    public GameObject victoryCutscene;
+    public GameObject defeatCutscene;
 
 	// Use this for initialization
 	void Start () {
@@ -19,4 +21,15 @@ public class SpaceBehavior : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void HandleFinalEvent(GameObject visitor, int earnedMoney) {
+        var gameManagerBehavior = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
+        if(earnedMoney >= gameManagerBehavior.amountOfMoneyNeededToWin) {
+            var cutsceneBehavior = victoryCutscene.GetComponent<CutsceneBehavior>();
+            cutsceneBehavior.ShowMessage(visitor);
+        } else {
+            var cutsceneBehavior = defeatCutscene.GetComponent<CutsceneBehavior>();
+			cutsceneBehavior.ShowMessage(visitor);
+        }
+    }
 }

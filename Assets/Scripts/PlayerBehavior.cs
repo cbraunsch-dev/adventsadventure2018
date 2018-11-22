@@ -21,6 +21,7 @@ public class PlayerBehavior : MonoBehaviour {
     public void PlacePlayerAtSpace(GameObject space) {
 		startingSpace = space;
         currentSpace = space;
+        this.SetInitialPositionAndDestination();
     }
 
     public void ScheduleMovement(int numberOfMoves) {
@@ -36,20 +37,27 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         this.currentSpace = startingSpace;
-        SetPositionAsTarget(this.currentSpace);
-        if(this.destination == null) {
-            this.destination = startingSpace;
-        }
+        SetInitialPositionAndDestination();
         if (this.Inventory == null)
         {
             this.Inventory = new Inventory();
         }
         this.gameManager = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
     }
-	
-	// Update is called once per frame
+
+    private void SetInitialPositionAndDestination()
+    {
+        SetPositionAsTarget(this.currentSpace);
+        if (this.destination == null)
+        {
+            this.destination = startingSpace;
+        }
+    }
+
+    // Update is called once per frame
     void Update () {
         //The movement using the keyboard is just for testing and debugging. Remove/disable for final build
         if (Input.GetKeyDown("d")) {
@@ -127,6 +135,10 @@ public class PlayerBehavior : MonoBehaviour {
                         case SpaceEvent.visitStore:
                             var store = spaceBehavior.store.GetComponent<StoreBehavior>();
                             store.ShowMessage(this.gameObject);
+                            break;
+                        case SpaceEvent.triggerCutscene:
+                            var cutscene = spaceBehavior.cutscene.GetComponent<CutsceneBehavior>();
+                            cutscene.ShowMessage(this.gameObject);
                             break;
                     }
                     this.PrintInventory();

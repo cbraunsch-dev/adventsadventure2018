@@ -129,11 +129,11 @@ public class GameManagerBehavior : MonoBehaviour {
 		mainCamera.transform.position = new Vector3(gameState.cameraPositionX, gameState.cameraPositionY, gameState.cameraPositionZ);
 	}
 
-	private void MovePlayerToSavedSpace(GameObject player, GameState gameState)
+	private void MovePlayerToSavedSpace(GameObject player, GameState state)
 	{
-		var space = GameObject.Find(gameState.nameOfCurrentSpace);
+		var space = GameObject.Find(state.nameOfCurrentSpace);
         player.GetComponent<PlayerBehavior>().PlacePlayerAtSpace(space);
-		player.transform.position = new Vector3(gameState.playerPositionX, gameState.playerPositionY, gameState.playerPositionZ);
+		player.transform.position = new Vector3(state.playerPositionX, state.playerPositionY, state.playerPositionZ);
 
 		//Mark spaces as 'visited'
 		this.VisitedSpace(space.GetComponent<SpaceBehavior>());

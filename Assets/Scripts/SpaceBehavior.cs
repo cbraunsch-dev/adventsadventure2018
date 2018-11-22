@@ -8,6 +8,7 @@ public class SpaceBehavior : MonoBehaviour {
     public SpaceEvent triggeredEvent;
     public bool visited;
     public GameObject store;
+    public GameObject cutscene;
 
 	// Use this for initialization
 	void Start () {

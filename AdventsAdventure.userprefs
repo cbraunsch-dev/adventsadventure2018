@@ -1,12 +1,14 @@
 ﻿<Properties StartupConfiguration="{9A4F60F8-D775-969F-EF32-ACB4D3005B71}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MovementCanvasBehavior.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/SpaceBehavior.cs">
     <Files>
       <File FileName="Assets/Scripts/MovementMechanic/MechanicManagerBehavior.cs" Line="42" Column="69" />
-      <File FileName="Assets/Scripts/GameManagerBehavior.cs" Line="31" Column="3" />
-      <File FileName="Assets/Scripts/PlayerBehavior.cs" Line="21" Column="50" />
+      <File FileName="Assets/Scripts/GameManagerBehavior.cs" Line="135" Column="73" />
+      <File FileName="Assets/Scripts/PlayerBehavior.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Scenes.cs" Line="6" Column="48" />
-      <File FileName="Assets/Scripts/Tags.cs" Line="6" Column="62" />
-      <File FileName="Assets/Scripts/MovementCanvasBehavior.cs" Line="7" Column="2" />
+      <File FileName="Assets/Scripts/StoreBehavior.cs" Line="16" Column="3" />
+      <File FileName="Assets/Scripts/CutsceneBehavior.cs" Line="27" Column="93" />
+      <File FileName="Assets/Scripts/SpaceEvent.cs" Line="6" Column="20" />
+      <File FileName="Assets/Scripts/SpaceBehavior.cs" Line="11" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

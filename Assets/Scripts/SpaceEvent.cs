@@ -2,5 +2,6 @@
 {
     earnMoney,
     loseMoney,
-    visitStore
+    visitStore,
+    triggerCutscene
 };

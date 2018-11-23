@@ -4,5 +4,6 @@
     loseMoney,
     visitStore,
     triggerCutscene,
+    findCollectible,
     finalEvent
 };

@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBehavior : MonoBehaviour {
     public GameObject startingSpace;
     public float speed = 5;
     public Inventory Inventory { get; private set; }
+    public GameObject collectiblesText;
 
     private GameObject currentSpace;
     private Vector3 targetPosition;
@@ -16,6 +18,7 @@ public class PlayerBehavior : MonoBehaviour {
     public void LoadInventory(Inventory inventory) {
         this.Inventory = inventory;
         this.PrintInventory();
+        this.UpdateHUD();
     }
 
     public void PlacePlayerAtSpace(GameObject space) {
@@ -140,6 +143,11 @@ public class PlayerBehavior : MonoBehaviour {
                             var cutscene = spaceBehavior.cutscene.GetComponent<CutsceneBehavior>();
                             cutscene.ShowMessage(this.gameObject);
                             break;
+                        case SpaceEvent.findCollectible:
+                            this.Inventory.FindCollectible();
+                            this.UpdateHUD();
+                            this.FinishVisit(other.gameObject);
+                            break;
                         case SpaceEvent.finalEvent:
                             spaceBehavior.HandleFinalEvent(this.gameObject, this.Inventory.Money);
                             break;
@@ -152,6 +160,10 @@ public class PlayerBehavior : MonoBehaviour {
 
     private void PrintInventory() {
         Debug.Log("Money: " + this.Inventory.Money + " Nr. of items: " + this.Inventory.Items.Count);
+    }
+
+    private void UpdateHUD() {
+        this.collectiblesText.GetComponent<Text>().text = "Collectibles: " + this.Inventory.Collectibles;
     }
 
     public void Buy(int itemIndex) {

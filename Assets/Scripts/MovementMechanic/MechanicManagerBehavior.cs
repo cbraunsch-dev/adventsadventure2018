@@ -16,31 +16,63 @@ public class MechanicManagerBehavior : MonoBehaviour
     private const float maxRadius = 2.5f;
     private const int initialRadius = 1;
     private int score = 1;
+    private bool doubleOrNothing = false;
 
+    public GameObject doubleOrNothingButton;
     public GameObject visor;
     public GameObject particle;
     public GameObject sphere;
+
+    void Start() {
+        doubleOrNothingButton.SetActive(false);
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown("space") && insideVisor)
         {
-            Debug.Log("Nice! Next level!");
-            score++;
-            this.insideVisor = false;
-            if(particle.GetComponent<ParticleBehavior>().radius < maxRadius) {
-                this.Grow();
-            } else {
-                this.ShrinkToInitialSize();
+            if (doubleOrNothing)
+            {
+                this.score *= 2;
+                this.FinishMechanicAndReturnScore();
+            }
+            else {
+                GoToNextLevel();    
             }
         }
         else if (Input.GetKeyDown("space"))
         {
-            Debug.Log("Sorry! Try again!");
-            var gameManagerBehavior = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
-            gameManagerBehavior.PlayerEarnedMovementScore(this.score);
+            if(doubleOrNothing) {
+                this.score = 1;
+                FinishMechanicAndReturnScore();
+            }
+            else {
+				FinishMechanicAndReturnScore();    
+            }
         }
+    }
+
+    private void FinishMechanicAndReturnScore()
+    {
+        Debug.Log("Player earned score: " + this.score);
+        var gameManagerBehavior = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
+        gameManagerBehavior.PlayerEarnedMovementScore(this.score);
+    }
+
+    private void GoToNextLevel()
+    {
+        score++;
+        this.insideVisor = false;
+        if (particle.GetComponent<ParticleBehavior>().radius < maxRadius)
+        {
+            this.Grow();
+        }
+        else
+        {
+            this.ShrinkToInitialSize();
+        }
+        doubleOrNothingButton.SetActive(true);
     }
 
     private void Grow()
@@ -69,6 +101,10 @@ public class MechanicManagerBehavior : MonoBehaviour
 		//Set position of visor. We divide they position by 4 because the visor will only have increased its y position by 2 twice (once when going
         // from the initial position to level 2 and once when going from level 2 to level 3.
 		visor.transform.position = new Vector3(visor.transform.position.x, visor.transform.position.y / 4, visor.transform.position.z);
+    }
+
+    public void DidStartDoubleOrNothing() {
+        this.doubleOrNothing = true;
     }
 
     public void DidEnterVisor()

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // The mechanic works like this: A particle orbits a sphere and passes through a visor. If the player hits the space bar while the particle is inside the
 // visor, the sphere's radius doubles and the particle's speed increases. If the user manages to hit the space bar again while the particle is inside the
@@ -19,12 +20,22 @@ public class MechanicManagerBehavior : MonoBehaviour
     private bool doubleOrNothing = false;
 
     public GameObject doubleOrNothingButton;
+    public GameObject scoreText;
+    public GameObject finishButton;
     public GameObject visor;
     public GameObject particle;
     public GameObject sphere;
 
-    void Start() {
+    void Start()
+    {
         doubleOrNothingButton.SetActive(false);
+        finishButton.SetActive(false);
+        UpdateScoreText();
+    }
+
+    private void UpdateScoreText()
+    {
+        this.scoreText.GetComponent<Text>().text = "Your score: " + this.score;
     }
 
     // Update is called once per frame
@@ -35,7 +46,7 @@ public class MechanicManagerBehavior : MonoBehaviour
             if (doubleOrNothing)
             {
                 this.score *= 2;
-                this.FinishMechanicAndReturnScore();
+                this.FinishMechanic();
             }
             else {
                 GoToNextLevel();    
@@ -45,19 +56,22 @@ public class MechanicManagerBehavior : MonoBehaviour
         {
             if(doubleOrNothing) {
                 this.score = 1;
-                FinishMechanicAndReturnScore();
+                FinishMechanic();
             }
             else {
-				FinishMechanicAndReturnScore();    
+				FinishMechanic();    
             }
         }
     }
 
-    private void FinishMechanicAndReturnScore()
+    private void FinishMechanic()
     {
+        this.UpdateScoreText();
+        this.finishButton.SetActive(true);
+        this.visor.SetActive(false);
+        this.particle.SetActive(false);
+        this.sphere.SetActive(false);
         Debug.Log("Player earned score: " + this.score);
-        var gameManagerBehavior = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
-        gameManagerBehavior.PlayerEarnedMovementScore(this.score);
     }
 
     private void GoToNextLevel()
@@ -73,6 +87,7 @@ public class MechanicManagerBehavior : MonoBehaviour
             this.ShrinkToInitialSize();
         }
         doubleOrNothingButton.SetActive(true);
+        this.UpdateScoreText();
     }
 
     private void Grow()
@@ -106,6 +121,11 @@ public class MechanicManagerBehavior : MonoBehaviour
     public void DidStartDoubleOrNothing() {
         this.doubleOrNothing = true;
     }
+
+    public void DidFinishMechanic() {
+		var gameManagerBehavior = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
+		gameManagerBehavior.PlayerEarnedMovementScore(this.score);
+	}
 
     public void DidEnterVisor()
     {

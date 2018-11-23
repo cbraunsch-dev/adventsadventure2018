@@ -74,6 +74,7 @@ public class MechanicManagerBehavior : MonoBehaviour
     {
         this.UpdateScoreText();
         this.finishButton.SetActive(true);
+        this.doubleOrNothingButton.SetActive(false);
         this.visor.SetActive(false);
         this.particle.SetActive(false);
         this.sphere.SetActive(false);

@@ -22,9 +22,9 @@ public class SpaceBehavior : MonoBehaviour {
 		
 	}
 
-    public void HandleFinalEvent(GameObject visitor, int earnedMoney) {
+    public void HandleFinalEvent(GameObject visitor, int earnedCollectibles) {
         var gameManagerBehavior = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
-        if(earnedMoney >= gameManagerBehavior.amountOfMoneyNeededToWin) {
+        if(earnedCollectibles >= gameManagerBehavior.numberOfCollectiblesNeededToWin) {
             var cutsceneBehavior = victoryCutscene.GetComponent<CutsceneBehavior>();
             cutsceneBehavior.ShowMessage(visitor, 0);
         } else {

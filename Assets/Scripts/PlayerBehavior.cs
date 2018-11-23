@@ -152,7 +152,7 @@ public class PlayerBehavior : MonoBehaviour {
                             this.FinishVisit(other.gameObject, 1);
                             break;
                         case SpaceEvent.finalEvent:
-                            spaceBehavior.HandleFinalEvent(this.gameObject, this.Inventory.Money);
+                            spaceBehavior.HandleFinalEvent(this.gameObject, this.Inventory.Collectibles);
                             break;
                     }
                     this.PrintInventory();

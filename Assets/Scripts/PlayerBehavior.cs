@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -75,7 +76,7 @@ public class PlayerBehavior : MonoBehaviour {
         MoveTowards(targetPosition);
 	}
 
-	private void Move(int numberOfMoves)
+    private void Move(int numberOfMoves)
 	{
 		if (numberOfMoves > 0)
 		{
@@ -141,12 +142,14 @@ public class PlayerBehavior : MonoBehaviour {
                             break;
                         case SpaceEvent.triggerCutscene:
                             var cutscene = spaceBehavior.cutscene.GetComponent<CutsceneBehavior>();
-                            cutscene.ShowMessage(this.gameObject);
+                            cutscene.ShowMessage(this.gameObject, 0);
                             break;
+                        case SpaceEvent.triggerCutsceneWithCollectibles:
+							var cutsceneWithCollectible = spaceBehavior.cutscene.GetComponent<CutsceneBehavior>();
+							cutsceneWithCollectible.ShowMessage(this.gameObject, 1);
+							break;
                         case SpaceEvent.findCollectible:
-                            this.Inventory.FindCollectible();
-                            this.UpdateHUD();
-                            this.FinishVisit(other.gameObject);
+                            this.FinishVisit(other.gameObject, 1);
                             break;
                         case SpaceEvent.finalEvent:
                             spaceBehavior.HandleFinalEvent(this.gameObject, this.Inventory.Money);
@@ -171,6 +174,13 @@ public class PlayerBehavior : MonoBehaviour {
         this.Inventory.BuyItem(item);
         this.PrintInventory();
     }
+
+	internal void FinishVisit(GameObject associatedSpace, int collectibles)
+	{
+        this.Inventory.FindCollectible(collectibles);
+		this.UpdateHUD();
+        this.FinishVisit(associatedSpace);
+	}
 
     public void FinishVisit(GameObject space) {
         var spaceBehavior = space.GetComponent<SpaceBehavior>();

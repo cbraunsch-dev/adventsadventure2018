@@ -20,8 +20,8 @@ public class Inventory {
         this.Money -= money;
     }
 
-    public void FindCollectible() {
-        this.Collectibles++;
+    public void FindCollectible(int collectibles) {
+        this.Collectibles += collectibles;
     }
 
     public void BuyItem(Item item) {

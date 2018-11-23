@@ -9,6 +9,7 @@ public class CutsceneBehavior : MonoBehaviour {
     private int textIndex = 0;
     private GameObject textComponent;
     private GameObject buttonTextComponent;
+    private int collectibles = 0;
 
     public GameObject associatedSpace;
     public List<string> texts = new List<string>();
@@ -25,13 +26,13 @@ public class CutsceneBehavior : MonoBehaviour {
 		textWithActions.SetActive(false);
 	}
 
-	public void ShowMessage(GameObject visitor)
-	{
-        this.textIndex = 0;
-        this.visitor = visitor;
+    public void ShowMessage(GameObject visitor, int collectibles) {
+        this.collectibles = collectibles;
+		this.textIndex = 0;
+		this.visitor = visitor;
 		this.canvasBehavior.Show();
-        this.ShowNextText();
-	}
+		this.ShowNextText();
+    }
 
 	public void Next()
 	{
@@ -55,7 +56,7 @@ public class CutsceneBehavior : MonoBehaviour {
 
 	private void HideMessage()
 	{
-		this.visitor.GetComponent<PlayerBehavior>().FinishVisit(associatedSpace);
+        this.visitor.GetComponent<PlayerBehavior>().FinishVisit(associatedSpace, this.collectibles);
 		this.canvasBehavior.Hide();
 	}
 }

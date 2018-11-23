@@ -26,10 +26,10 @@ public class SpaceBehavior : MonoBehaviour {
         var gameManagerBehavior = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
         if(earnedMoney >= gameManagerBehavior.amountOfMoneyNeededToWin) {
             var cutsceneBehavior = victoryCutscene.GetComponent<CutsceneBehavior>();
-            cutsceneBehavior.ShowMessage(visitor);
+            cutsceneBehavior.ShowMessage(visitor, 0);
         } else {
             var cutsceneBehavior = defeatCutscene.GetComponent<CutsceneBehavior>();
-			cutsceneBehavior.ShowMessage(visitor);
+			cutsceneBehavior.ShowMessage(visitor, 0);
         }
     }
 }

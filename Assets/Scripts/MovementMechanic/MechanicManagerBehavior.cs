@@ -35,7 +35,11 @@ public class MechanicManagerBehavior : MonoBehaviour
 
     private void UpdateScoreText()
     {
-        this.scoreText.GetComponent<Text>().text = "Your score: " + this.score;
+        this.UpdateScoreText("Your score: " + this.score);
+    }
+
+    private void UpdateScoreText(string text) {
+        this.scoreText.GetComponent<Text>().text = text;
     }
 
     // Update is called once per frame
@@ -120,6 +124,8 @@ public class MechanicManagerBehavior : MonoBehaviour
 
     public void DidStartDoubleOrNothing() {
         this.doubleOrNothing = true;
+        var potentialWin = this.score * 2;
+        this.UpdateScoreText("Your score: Either " + potentialWin + " or 1");
     }
 
     public void DidFinishMechanic() {

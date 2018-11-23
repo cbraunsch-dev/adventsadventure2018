@@ -18,6 +18,7 @@ public class MechanicManagerBehavior : MonoBehaviour
     private const int initialRadius = 1;
     private int score = 1;
     private bool doubleOrNothing = false;
+    private bool debounce = false;  //Prevents the user from spamming the space bar to try and jump levels multiple times in a row
 
     public GameObject doubleOrNothingButton;
     public GameObject scoreText;
@@ -45,8 +46,9 @@ public class MechanicManagerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("space") && insideVisor)
+        if (Input.GetKeyDown("space") && insideVisor && !debounce)
         {
+            debounce = true;
             if (doubleOrNothing)
             {
                 this.score *= 2;
@@ -141,5 +143,6 @@ public class MechanicManagerBehavior : MonoBehaviour
     public void DidExitVisor()
     {
         this.insideVisor = false;
+        this.debounce = false;
     }
 }

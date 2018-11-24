@@ -8,10 +8,11 @@ using System.IO;
 
 public class GameManagerBehavior : MonoBehaviour {
     private const string saveGameFilename = "/SavedGame.dat";
-    private int numberOfTurnsRemaining = 0; //TODO: implement this
+    private int numberOfTurnsRemaining = 4;
     private string nameOfCurrentSpace;
     private GameState gameState;
     private int numberOfMovesPlayerEarned = 0;
+    private GameObject outOfTurnsCanvas;
 
 	private static GameManagerBehavior instance = null;
 
@@ -32,10 +33,21 @@ public class GameManagerBehavior : MonoBehaviour {
 		}
 	}
 
+    void Start() {
+        this.outOfTurnsCanvas = this.FindOutOfTurnsCanvas();
+        this.outOfTurnsCanvas.SetActive(false);
+    }
+
+    private GameObject FindOutOfTurnsCanvas() {
+        return GameObject.Find("OutOfTurnsCanvas");
+    }
+
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
         if(scene.name == Scenes.GameBoard && gameState != null)
         {
+            this.outOfTurnsCanvas = this.FindOutOfTurnsCanvas();
+            this.outOfTurnsCanvas.SetActive(false);
             this.ApplyGameState();
             MovePlayerAccordingToEarnedScore();
         }
@@ -59,9 +71,15 @@ public class GameManagerBehavior : MonoBehaviour {
     }
 
     public void VisitedSpace(GameObject space) {
-        this.nameOfCurrentSpace = space.name;
-        var player = GameObject.FindWithTag(Tags.Player);
-        this.SaveGame(player);
+        this.numberOfTurnsRemaining--;
+        if (this.numberOfTurnsRemaining == 0 && space.GetComponent<SpaceBehavior>().triggeredEvent != SpaceEvent.finalEvent) {
+            //Game over
+            this.outOfTurnsCanvas.SetActive(true);
+        } else {
+			this.nameOfCurrentSpace = space.name;
+			var player = GameObject.FindWithTag(Tags.Player);
+			this.SaveGame(player);    
+        }
     }
 
     public void LoadGame()

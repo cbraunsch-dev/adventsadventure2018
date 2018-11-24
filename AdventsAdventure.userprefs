@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{9A4F60F8-D775-969F-EF32-ACB4D3005B71}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Inventory.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameManagerBehavior.cs">
     <Files>
       <File FileName="Assets/Scripts/MovementMechanic/MechanicManagerBehavior.cs" Line="77" Column="53" />
       <File FileName="Assets/Scripts/GameManagerBehavior.cs" Line="18" Column="44" />

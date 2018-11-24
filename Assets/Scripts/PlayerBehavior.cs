@@ -9,6 +9,7 @@ public class PlayerBehavior : MonoBehaviour {
     public float speed = 5;
     public Inventory Inventory { get; private set; }
     public GameObject collectiblesText;
+    public GameObject nrOfTurnsText;
 
     private GameObject currentSpace;
     private Vector3 targetPosition;
@@ -18,7 +19,6 @@ public class PlayerBehavior : MonoBehaviour {
 
     public void LoadInventory(Inventory inventory) {
         this.Inventory = inventory;
-        this.PrintInventory();
         this.UpdateHUD();
     }
 
@@ -50,6 +50,7 @@ public class PlayerBehavior : MonoBehaviour {
             this.Inventory = new Inventory();
         }
         this.gameManager = GameObject.FindWithTag(Tags.GameManager).GetComponent<GameManagerBehavior>();
+        this.UpdateHUD();
     }
 
     private void SetInitialPositionAndDestination()
@@ -130,11 +131,11 @@ public class PlayerBehavior : MonoBehaviour {
                     {
                         case SpaceEvent.earnMoney:
                             this.Inventory.CollectMoney(10);
-                            this.FinishVisit(other.gameObject);
+                            this.FinishVisit(other.gameObject, 0);
                             break;
                         case SpaceEvent.loseMoney:
                             this.Inventory.SpendMoney(10);
-                            this.FinishVisit(other.gameObject);
+                            this.FinishVisit(other.gameObject, 0);
                             break;
                         case SpaceEvent.visitStore:
                             var store = spaceBehavior.store.GetComponent<StoreBehavior>();
@@ -166,7 +167,13 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     private void UpdateHUD() {
-        this.collectiblesText.GetComponent<Text>().text = "Collectibles: " + this.Inventory.Collectibles;
+        if(this.collectiblesText != null) {
+            this.collectiblesText.GetComponent<Text>().text = "Collectibles: " + this.Inventory.Collectibles;    
+        }
+        if (this.nrOfTurnsText != null && this.gameManager != null) {
+			var nrOfTurnsRemaining = this.gameManager.GetComponent<GameManagerBehavior>().numberOfTurnsRemaining;
+			this.nrOfTurnsText.GetComponent<Text>().text = "Turns remaining: " + nrOfTurnsRemaining;    
+        }
     }
 
     public void Buy(int itemIndex) {
@@ -178,11 +185,11 @@ public class PlayerBehavior : MonoBehaviour {
 	internal void FinishVisit(GameObject associatedSpace, int collectibles)
 	{
         this.Inventory.FindCollectible(collectibles);
-		this.UpdateHUD();
         this.FinishVisit(associatedSpace);
+        this.UpdateHUD();
 	}
 
-    public void FinishVisit(GameObject space) {
+    private void FinishVisit(GameObject space) {
         var spaceBehavior = space.GetComponent<SpaceBehavior>();
         spaceBehavior.visited = true;
         this.gameManager.VisitedSpace(space);

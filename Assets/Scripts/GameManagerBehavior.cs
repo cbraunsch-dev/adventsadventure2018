@@ -8,7 +8,6 @@ using System.IO;
 
 public class GameManagerBehavior : MonoBehaviour {
     private const string saveGameFilename = "/SavedGame.dat";
-    private int numberOfTurnsRemaining = 4;
     private string nameOfCurrentSpace;
     private GameState gameState;
     private int numberOfMovesPlayerEarned = 0;
@@ -16,12 +15,14 @@ public class GameManagerBehavior : MonoBehaviour {
 
 	private static GameManagerBehavior instance = null;
 
+    public int numberOfTurnsRemaining { get; private set; }
     public int numberOfCollectiblesNeededToWin = 2;
 	
     void Awake()
 	{
 		if (instance == null)
 		{
+            this.numberOfTurnsRemaining = 4;
 			instance = this;
 			DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;

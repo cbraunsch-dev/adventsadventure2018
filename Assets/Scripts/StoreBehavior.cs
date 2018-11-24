@@ -27,7 +27,7 @@ public class StoreBehavior : MonoBehaviour {
 	}
 
     public void HideMessage() {
-        this.visitor.GetComponent<PlayerBehavior>().FinishVisit(associatedSpace);
-        this.canvasBehavior.Hide();
+        //this.visitor.GetComponent<PlayerBehavior>().FinishVisit(associatedSpace);
+        //this.canvasBehavior.Hide();
     }
 }

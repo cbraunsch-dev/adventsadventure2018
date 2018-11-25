@@ -8,5 +8,6 @@ public class ApplicationModel {
 
 public enum StartScreenOption {
     newGame,
-    loadGame
+    loadGame,
+    tutorial
 }

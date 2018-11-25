@@ -18,6 +18,7 @@ public class GameManagerBehavior : MonoBehaviour {
 
     public int numberOfTurnsRemaining { get; private set; }
     public int numberOfCollectiblesNeededToWin = 2;
+    public bool tutorialMode = false;
 	
     void Awake()
 	{
@@ -60,7 +61,8 @@ public class GameManagerBehavior : MonoBehaviour {
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-        if(scene.name == Scenes.GameBoard && gameState != null)
+        if((scene.name == Scenes.GameBoard || scene.name == Scenes.TutorialBoard) && 
+           gameState != null)
         {
             this.outOfTurnsCanvas = this.FindOutOfTurnsCanvas();
             this.outOfTurnsCanvas.SetActive(false);
@@ -85,18 +87,28 @@ public class GameManagerBehavior : MonoBehaviour {
     public void PlayerEarnedMovementScore(int score) {
         Debug.Log("Player earned score: " + score);
         this.numberOfMovesPlayerEarned = score;
-        SceneManager.LoadScene(SceneNames.GameBoard);
+        if(this.tutorialMode) {
+            SceneManager.LoadScene(SceneNames.TutorialBoard);
+		} else {
+            SceneManager.LoadScene(SceneNames.GameBoard);    
+        }
     }
 
     public void VisitedSpace(GameObject space) {
-        this.numberOfTurnsRemaining--;
-        if (this.numberOfTurnsRemaining == 0 && space.GetComponent<SpaceBehavior>().triggeredEvent != SpaceEvent.finalEvent) {
-            //Game over
-            this.outOfTurnsCanvas.SetActive(true);
-        } else {
-			this.nameOfCurrentSpace = space.name;
-			var player = GameObject.FindWithTag(Tags.Player);
-			this.SaveGame(player);    
+        this.nameOfCurrentSpace = space.name;
+        var player = GameObject.FindWithTag(Tags.Player);
+        this.gameState = this.RecordGameState(player);
+        if(!this.tutorialMode) {
+			this.numberOfTurnsRemaining--;
+			if (this.numberOfTurnsRemaining == 0 && space.GetComponent<SpaceBehavior>().triggeredEvent != SpaceEvent.finalEvent)
+			{
+				//Game over
+				this.outOfTurnsCanvas.SetActive(true);
+			}
+			else
+			{
+                this.SerializeGameState(gameState);
+			}    
         }
     }
 
@@ -106,30 +118,33 @@ public class GameManagerBehavior : MonoBehaviour {
         ApplyGameState();
     }
 
-    private void SaveGame(GameObject player) {
+    private GameState RecordGameState(GameObject player)
+	{
+        var state = new GameState();
+		var mainCamera = GameObject.FindWithTag(Tags.MainCamera);
+		state.numberOfTurnsRemaining = this.numberOfTurnsRemaining;
+		state.nameOfCurrentSpace = this.nameOfCurrentSpace;
+		state.cameraPositionX = mainCamera.transform.position.x;
+		state.cameraPositionY = mainCamera.transform.position.y;
+		state.cameraPositionZ = mainCamera.transform.position.z;
+
+		var playerBehavior = player.GetComponent<PlayerBehavior>();
+		state.playerInventory = playerBehavior.Inventory;
+		state.playerPositionX = player.transform.position.x;
+		state.playerPositionY = player.transform.position.y;
+		state.playerPositionZ = player.transform.position.z;
+
+        return state;
+	}
+
+    private void SerializeGameState(GameState state)
+    {
         var filename = Application.persistentDataPath + saveGameFilename;
         //Debug.Log("Saving file to: " + filename);
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Open(filename, FileMode.OpenOrCreate);
 
-		if (gameState == null)
-		{
-			gameState = new GameState();
-		}
-        var mainCamera = GameObject.FindWithTag(Tags.MainCamera);
-        gameState.numberOfTurnsRemaining = this.numberOfTurnsRemaining;
-        gameState.nameOfCurrentSpace = this.nameOfCurrentSpace;
-        gameState.cameraPositionX = mainCamera.transform.position.x;
-        gameState.cameraPositionY = mainCamera.transform.position.y;
-        gameState.cameraPositionZ = mainCamera.transform.position.z;
-
-		var playerBehavior = player.GetComponent<PlayerBehavior>();
-        gameState.playerInventory = playerBehavior.Inventory;
-        gameState.playerPositionX = player.transform.position.x;
-        gameState.playerPositionY = player.transform.position.y;
-        gameState.playerPositionZ = player.transform.position.z;
-
-        bf.Serialize(file, gameState);
+        bf.Serialize(file, state);
         file.Close();
     }
 
@@ -180,7 +195,7 @@ public class GameManagerBehavior : MonoBehaviour {
 	private void VisitedSpace(SpaceBehavior spaceBehavior)
 	{
 		spaceBehavior.visited = true;
-		if (spaceBehavior.previousSpace != null)
+        if (spaceBehavior.previousSpace != null)
 		{
 			this.VisitedSpace(spaceBehavior.previousSpace.GetComponent<SpaceBehavior>());
 		}

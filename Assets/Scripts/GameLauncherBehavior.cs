@@ -14,4 +14,9 @@ public class GameLauncherBehavior : MonoBehaviour {
         ApplicationModel.selectedOptionInStartScreen = StartScreenOption.loadGame;
         SceneManager.LoadScene(SceneNames.GameBoard);
     }
+
+    public void StartTutorial() {
+        ApplicationModel.selectedOptionInStartScreen = StartScreenOption.tutorial;
+        SceneManager.LoadScene(SceneNames.TutorialBoard);
+    }
 }

@@ -6,4 +6,5 @@ public class SceneNames {
     public static string TitleScreen = "TitleScreen";
     public static string GameBoard = "GameBoard";
     public static string Movement = "MovementMechanic";
+    public static string TutorialBoard = "TutorialBoard";
 }

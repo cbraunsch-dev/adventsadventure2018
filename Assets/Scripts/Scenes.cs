@@ -4,4 +4,5 @@ using UnityEngine;
 
 public class Scenes {
     public static string GameBoard = "GameBoard";
+    public static string TutorialBoard = "TutorialBoard";
 }

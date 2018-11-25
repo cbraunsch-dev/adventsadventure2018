@@ -108,9 +108,9 @@ public class GameManagerBehavior : MonoBehaviour {
     public void VisitedSpace(GameObject space) {
         this.nameOfCurrentSpace = space.name;
         var player = GameObject.FindWithTag(Tags.Player);
+        this.numberOfTurnsRemaining--;
         this.gameState = this.RecordGameState(player);
         if(!this.tutorialMode) {
-			this.numberOfTurnsRemaining--;
 			if (this.numberOfTurnsRemaining == 0 && space.GetComponent<SpaceBehavior>().triggeredEvent != SpaceEvent.finalEvent)
 			{
 				//Game over

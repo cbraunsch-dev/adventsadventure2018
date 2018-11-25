@@ -13,6 +13,14 @@ public class GameManagerBehavior : MonoBehaviour {
     private int numberOfMovesPlayerEarned = 0;
     private GameObject outOfTurnsCanvas;
     private GameObject foundCollectibleCanvas;
+    private GameObject letsGoButtonValue;
+    private GameObject letsGoButton { get {
+            if (this.letsGoButtonValue == null) {
+                this.letsGoButtonValue = GameObject.Find("LetsGoButton");
+            }
+            return this.letsGoButtonValue;
+        } 
+    }
 
 	private static GameManagerBehavior instance = null;
 
@@ -41,6 +49,7 @@ public class GameManagerBehavior : MonoBehaviour {
         this.outOfTurnsCanvas.SetActive(false);
         this.foundCollectibleCanvas = this.FindCollectibleFoundCanvas();
         this.foundCollectibleCanvas.SetActive(false);
+        this.letsGoButton.SetActive(true);
     }
 
     private GameObject FindOutOfTurnsCanvas() {
@@ -68,6 +77,7 @@ public class GameManagerBehavior : MonoBehaviour {
             this.outOfTurnsCanvas.SetActive(false);
 			this.foundCollectibleCanvas = this.FindCollectibleFoundCanvas();
 			this.foundCollectibleCanvas.SetActive(false);
+            this.letsGoButton.SetActive(true);
             this.ApplyGameState();
             MovePlayerAccordingToEarnedScore();
         }
@@ -81,6 +91,7 @@ public class GameManagerBehavior : MonoBehaviour {
     }
 
     public void TryToMove() {
+        this.letsGoButton.SetActive(false);
         SceneManager.LoadScene(SceneNames.Movement);    
     }
 

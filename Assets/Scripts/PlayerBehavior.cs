@@ -15,7 +15,6 @@ public class PlayerBehavior : MonoBehaviour {
     private GameObject nextWayPoint;
     private Vector3 targetPosition;
     private GameManagerBehavior gameManager;
-    private int numberOfMovesToMake = 0;
     private GameObject destination;
 
     public void LoadInventory(Inventory inventory) {
@@ -30,7 +29,6 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     public void ScheduleMovement(int numberOfMoves) {
-        this.numberOfMovesToMake = numberOfMoves;
         this.destination = FindDestination(numberOfMoves, currentSpace);
         this.MoveToNextWayPoint();
     }

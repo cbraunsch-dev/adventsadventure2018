@@ -12,6 +12,7 @@ public class PlayerBehavior : MonoBehaviour {
     public GameObject nrOfTurnsText;
 
     private GameObject currentSpace;
+    private GameObject nextWayPoint;
     private Vector3 targetPosition;
     private GameManagerBehavior gameManager;
     private int numberOfMovesToMake = 0;
@@ -31,6 +32,13 @@ public class PlayerBehavior : MonoBehaviour {
     public void ScheduleMovement(int numberOfMoves) {
         this.numberOfMovesToMake = numberOfMoves;
         this.destination = FindDestination(numberOfMoves, currentSpace);
+        this.MoveToNextWayPoint();
+    }
+
+    private void MoveToNextWayPoint() {
+        var nextSpace = currentSpace.GetComponent<SpaceBehavior>().nextSpace;
+        this.nextWayPoint = nextSpace;
+        SetPositionAsTarget(nextWayPoint);
     }
 
     private GameObject FindDestination(int numberOfMoves, GameObject space) {
@@ -43,8 +51,10 @@ public class PlayerBehavior : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        this.currentSpace = startingSpace;
-        SetInitialPositionAndDestination();
+        if(this.currentSpace == null) {
+			this.currentSpace = startingSpace;
+			SetInitialPositionAndDestination();    
+        }
         if (this.Inventory == null)
         {
             this.Inventory = new Inventory();
@@ -55,7 +65,7 @@ public class PlayerBehavior : MonoBehaviour {
 
     private void SetInitialPositionAndDestination()
     {
-        SetPositionAsTarget(this.currentSpace);
+        SetPositionAsTarget(this.startingSpace);
         if (this.destination == null)
         {
             this.destination = startingSpace;
@@ -64,48 +74,13 @@ public class PlayerBehavior : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        //The movement using the keyboard is just for testing and debugging. Remove/disable for final build
-        if (Input.GetKeyDown("d")) {
-            MoveToNextSpace(this.currentSpace);
-        } else if (Input.GetKeyDown("a")) {
-            MoveToPreviousSpace(this.currentSpace);
-        }
-
-        Move(this.numberOfMovesToMake);
-        this.numberOfMovesToMake = 0;
-
         MoveTowards(targetPosition);
 	}
-
-    private void Move(int numberOfMoves)
-	{
-		if (numberOfMoves > 0)
-		{
-			this.MoveToNextSpace(this.currentSpace);
-			this.Move(numberOfMoves - 1);
-		}
-	}
-
-    void MoveToNextSpace(GameObject space) {
-        var nextSpace = space.GetComponent<SpaceBehavior>().nextSpace;
-        if (nextSpace != null) {
-            this.currentSpace = nextSpace;
-            SetPositionAsTarget(this.currentSpace);
-        }
-    }
-
-    void MoveToPreviousSpace(GameObject space) {
-        var previousSpace = space.GetComponent<SpaceBehavior>().previousSpace;
-		if (previousSpace != null)
-		{
-			this.currentSpace = previousSpace;
-            SetPositionAsTarget(this.currentSpace);
-		}
-    }
 
     void SetPositionAsTarget(GameObject space) {
         //Lock the y-axis so that the player remains at a constant height while moving. The game board will be flat
         this.targetPosition = new Vector3(space.transform.position.x, this.transform.position.y, space.transform.position.z);
+        Debug.Log("Set target position to: " + targetPosition);
     }
 
     void MoveTowards(Vector3 position) {
@@ -117,50 +92,61 @@ public class PlayerBehavior : MonoBehaviour {
         transform.position = Vector3.MoveTowards(transform.position, position, step);
     }
 
-	void OnTriggerEnter(Collider other)
-	{
+    void OnTriggerEnter(Collider other)
+    {
         if (other.gameObject == this.destination)
         {
-            var spaceBehavior = other.gameObject.GetComponent<SpaceBehavior>();
-            if (spaceBehavior != null)
+            this.currentSpace = other.gameObject;
+            VisitSpace(other);
+        }
+        else if (other.gameObject == this.nextWayPoint)
+        {
+            this.currentSpace = other.gameObject;
+            MoveToNextWayPoint();
+        }
+    }
+
+    private void VisitSpace(Collider other)
+    {
+        var spaceBehavior = other.gameObject.GetComponent<SpaceBehavior>();
+        if (spaceBehavior != null)
+        {
+            if (!spaceBehavior.visited)
             {
-                if (!spaceBehavior.visited)
+                var spaceEvent = spaceBehavior.triggeredEvent;
+                switch (spaceEvent)
                 {
-                    var spaceEvent = spaceBehavior.triggeredEvent;
-                    switch (spaceEvent)
-                    {
-                        case SpaceEvent.earnMoney:
-                            this.Inventory.CollectMoney(10);
-                            this.FinishVisit(other.gameObject, 0);
-                            break;
-                        case SpaceEvent.loseMoney:
-                            this.Inventory.SpendMoney(10);
-                            this.FinishVisit(other.gameObject, 0);
-                            break;
-                        case SpaceEvent.visitStore:
-                            var store = spaceBehavior.store.GetComponent<StoreBehavior>();
-                            store.ShowMessage(this.gameObject);
-                            break;
-                        case SpaceEvent.triggerCutscene:
-                            var cutscene = spaceBehavior.cutscene.GetComponent<CutsceneBehavior>();
-                            cutscene.ShowMessage(this.gameObject, 0);
-                            break;
-                        case SpaceEvent.triggerCutsceneWithCollectibles:
-							var cutsceneWithCollectible = spaceBehavior.cutscene.GetComponent<CutsceneBehavior>();
-							cutsceneWithCollectible.ShowMessage(this.gameObject, 1);
-							break;
-                        case SpaceEvent.findCollectible:
-                            this.FinishVisit(other.gameObject, 1);
-                            break;
-                        case SpaceEvent.finalEvent:
-                            spaceBehavior.HandleFinalEvent(this.gameObject, this.Inventory.Collectibles);
-                            break;
-                    }
-                    this.PrintInventory();
+                    case SpaceEvent.earnMoney:
+                        this.Inventory.CollectMoney(10);
+                        this.FinishVisit(other.gameObject, 0);
+                        break;
+                    case SpaceEvent.loseMoney:
+                        this.Inventory.SpendMoney(10);
+                        this.FinishVisit(other.gameObject, 0);
+                        break;
+                    case SpaceEvent.visitStore:
+                        var store = spaceBehavior.store.GetComponent<StoreBehavior>();
+                        store.ShowMessage(this.gameObject);
+                        break;
+                    case SpaceEvent.triggerCutscene:
+                        var cutscene = spaceBehavior.cutscene.GetComponent<CutsceneBehavior>();
+                        cutscene.ShowMessage(this.gameObject, 0);
+                        break;
+                    case SpaceEvent.triggerCutsceneWithCollectibles:
+                        var cutsceneWithCollectible = spaceBehavior.cutscene.GetComponent<CutsceneBehavior>();
+                        cutsceneWithCollectible.ShowMessage(this.gameObject, 1);
+                        break;
+                    case SpaceEvent.findCollectible:
+                        this.FinishVisit(other.gameObject, 1);
+                        break;
+                    case SpaceEvent.finalEvent:
+                        spaceBehavior.HandleFinalEvent(this.gameObject, this.Inventory.Collectibles);
+                        break;
                 }
+                this.PrintInventory();
             }
         }
-	}
+    }
 
     private void PrintInventory() {
         Debug.Log("Money: " + this.Inventory.Money + " Nr. of items: " + this.Inventory.Items.Count);

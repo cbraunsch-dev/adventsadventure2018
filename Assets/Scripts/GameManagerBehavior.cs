@@ -12,6 +12,7 @@ public class GameManagerBehavior : MonoBehaviour {
     private GameState gameState;
     private int numberOfMovesPlayerEarned = 0;
     private GameObject outOfTurnsCanvas;
+    private GameObject foundCollectibleCanvas;
 
 	private static GameManagerBehavior instance = null;
 
@@ -22,7 +23,7 @@ public class GameManagerBehavior : MonoBehaviour {
 	{
 		if (instance == null)
 		{
-            this.numberOfTurnsRemaining = 4;
+            this.numberOfTurnsRemaining = 10;
 			instance = this;
 			DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -37,10 +38,24 @@ public class GameManagerBehavior : MonoBehaviour {
     void Start() {
         this.outOfTurnsCanvas = this.FindOutOfTurnsCanvas();
         this.outOfTurnsCanvas.SetActive(false);
+        this.foundCollectibleCanvas = this.FindCollectibleFoundCanvas();
+        this.foundCollectibleCanvas.SetActive(false);
     }
 
     private GameObject FindOutOfTurnsCanvas() {
         return GameObject.Find("OutOfTurnsCanvas");
+    }
+
+    private GameObject FindCollectibleFoundCanvas() {
+        return GameObject.Find("CollectibleFoundCanvas");
+    }
+
+    public void ShowCollectibleFoundMessage() {
+        this.foundCollectibleCanvas.SetActive(true);
+    }
+
+    public void HideCollectibleFoundMessage() {
+        this.foundCollectibleCanvas.SetActive(false);
     }
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -49,6 +64,8 @@ public class GameManagerBehavior : MonoBehaviour {
         {
             this.outOfTurnsCanvas = this.FindOutOfTurnsCanvas();
             this.outOfTurnsCanvas.SetActive(false);
+			this.foundCollectibleCanvas = this.FindCollectibleFoundCanvas();
+			this.foundCollectibleCanvas.SetActive(false);
             this.ApplyGameState();
             MovePlayerAccordingToEarnedScore();
         }

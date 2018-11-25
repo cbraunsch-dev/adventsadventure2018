@@ -184,6 +184,12 @@ public class PlayerBehavior : MonoBehaviour {
 
 	internal void FinishVisit(GameObject associatedSpace, int collectibles)
 	{
+        if(collectibles > 0) {
+			if (gameManager != null)
+			{
+				this.gameManager.ShowCollectibleFoundMessage();
+			}
+        }
         this.Inventory.FindCollectible(collectibles);
         this.FinishVisit(associatedSpace);
         this.UpdateHUD();

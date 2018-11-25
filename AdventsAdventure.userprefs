@@ -1,22 +1,26 @@
 ﻿<Properties StartupConfiguration="{9A4F60F8-D775-969F-EF32-ACB4D3005B71}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameManagerBehavior.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/CollectibleFoundCanvasBehavior.cs">
     <Files>
       <File FileName="Assets/Scripts/MovementMechanic/MechanicManagerBehavior.cs" Line="77" Column="53" />
-      <File FileName="Assets/Scripts/GameManagerBehavior.cs" Line="18" Column="44" />
-      <File FileName="Assets/Scripts/PlayerBehavior.cs" Line="144" Column="29" />
+      <File FileName="Assets/Scripts/GameManagerBehavior.cs" Line="54" Column="14" />
+      <File FileName="Assets/Scripts/PlayerBehavior.cs" Line="155" Column="80" />
       <File FileName="Assets/Scripts/Scenes.cs" Line="6" Column="48" />
-      <File FileName="Assets/Scripts/StoreBehavior.cs" Line="16" Column="3" />
-      <File FileName="Assets/Scripts/CutsceneBehavior.cs" Line="49" Column="26" />
+      <File FileName="Assets/Scripts/StoreBehavior.cs" Line="31" Column="11" />
+      <File FileName="Assets/Scripts/CutsceneBehavior.cs" Line="59" Column="53" />
       <File FileName="Assets/Scripts/SpaceEvent.cs" Line="7" Column="21" />
-      <File FileName="Assets/Scripts/SpaceBehavior.cs" Line="31" Column="50" />
+      <File FileName="Assets/Scripts/SpaceBehavior.cs" Line="8" Column="28" />
       <File FileName="Assets/Scripts/MovementMechanic/VisorLeftSideBehavior.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Inventory.cs" Line="9" Column="18" />
+      <File FileName="Assets/Scripts/CollectibleFoundCanvasBehavior.cs" Line="6" Column="34" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.AdventsAdventure PreferredExecutionTarget="Unity.Editor" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/chrisbraunschweiler1/Documents/Development/Game_Development/AdventsAdventure/AdventsAdventure/Assets/Scripts/GameManagerBehavior.cs" relfile="Assets/Scripts/GameManagerBehavior.cs" line="105" column="1" />
+      <Breakpoint file="/Users/chrisbraunschweiler1/Documents/Development/Game_Development/AdventsAdventure/AdventsAdventure/Assets/Scripts/GameManagerBehavior.cs" relfile="Assets/Scripts/GameManagerBehavior.cs" line="65" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />

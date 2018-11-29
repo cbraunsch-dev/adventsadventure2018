@@ -156,7 +156,7 @@ public class PlayerBehavior : MonoBehaviour {
         }
         if (this.nrOfTurnsText != null && this.gameManager != null) {
 			var nrOfTurnsRemaining = this.gameManager.GetComponent<GameManagerBehavior>().numberOfTurnsRemaining;
-			this.nrOfTurnsText.GetComponent<Text>().text = "Turns remaining: " + nrOfTurnsRemaining;    
+			this.nrOfTurnsText.GetComponent<Text>().text = "Days remaining: " + nrOfTurnsRemaining;    
         }
     }
 

@@ -151,8 +151,9 @@ public class PlayerBehavior : MonoBehaviour {
     }
 
     private void UpdateHUD() {
-        if(this.collectiblesText != null) {
-            this.collectiblesText.GetComponent<Text>().text = "Collectibles: " + this.Inventory.Collectibles;    
+        if(this.collectiblesText != null && this.gameManager != null) {
+            var nrOfCollectiblesToCollect = this.gameManager.GetComponent<GameManagerBehavior>().numberOfCollectiblesNeededToWin;
+            this.collectiblesText.GetComponent<Text>().text = "Shells: " + this.Inventory.Collectibles + "/" + nrOfCollectiblesToCollect;    
         }
         if (this.nrOfTurnsText != null && this.gameManager != null) {
 			var nrOfTurnsRemaining = this.gameManager.GetComponent<GameManagerBehavior>().numberOfTurnsRemaining;

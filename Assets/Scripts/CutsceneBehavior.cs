@@ -12,6 +12,7 @@ public class CutsceneBehavior : MonoBehaviour {
     private int collectibles = 0;
 
     public GameObject associatedSpace;
+    public string speaker;
     public List<string> texts = new List<string>();
 
 	// Use this for initialization
@@ -19,6 +20,8 @@ public class CutsceneBehavior : MonoBehaviour {
 	{
 		var textWithActions = transform.Find("Canvas").gameObject;
         var imageBackground = textWithActions.transform.Find("Image");
+        var nameText = imageBackground.Find("Name").gameObject;
+        nameText.GetComponent<Text>().text = this.speaker;
         this.textComponent = imageBackground.Find("Text").gameObject;
         var button = imageBackground.Find("Button");
         this.buttonTextComponent = button.Find("Text").gameObject;

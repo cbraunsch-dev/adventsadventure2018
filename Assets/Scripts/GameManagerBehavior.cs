@@ -32,7 +32,7 @@ public class GameManagerBehavior : MonoBehaviour {
 	{
 		if (instance == null)
 		{
-            this.numberOfTurnsRemaining = 30;
+            this.numberOfTurnsRemaining = 23;   //23 days until Xmas
 			instance = this;
 			DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;

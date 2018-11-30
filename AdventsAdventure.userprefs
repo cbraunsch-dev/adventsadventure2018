@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{9A4F60F8-D775-969F-EF32-ACB4D3005B71}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameManagerBehavior.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameManagerBehavior.cs" Line="28" Column="28" />
+      <File FileName="Assets/Scripts/GameManagerBehavior.cs" Line="34" Column="4" />
       <File FileName="Assets/Scripts/PlayerBehavior.cs" Line="154" Column="72" />
       <File FileName="Assets/Scripts/CutsceneBehavior.cs" Line="24" Column="59" />
     </Files>

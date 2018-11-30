@@ -25,7 +25,7 @@ public class GameManagerBehavior : MonoBehaviour {
 	private static GameManagerBehavior instance = null;
 
     public int numberOfTurnsRemaining { get; private set; }
-    public int numberOfCollectiblesNeededToWin = 2;
+    public int numberOfCollectiblesNeededToWin = 6;
     public bool tutorialMode = false;
 	
     void Awake()

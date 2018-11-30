@@ -32,7 +32,7 @@ public class GameManagerBehavior : MonoBehaviour {
 	{
 		if (instance == null)
 		{
-            this.numberOfTurnsRemaining = 10;
+            this.numberOfTurnsRemaining = 30;
 			instance = this;
 			DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;

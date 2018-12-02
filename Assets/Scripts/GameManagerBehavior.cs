@@ -91,6 +91,7 @@ public class GameManagerBehavior : MonoBehaviour {
     }
 
     public void TryToMove() {
+        this.gameState = this.RecordGameState();
         this.letsGoButton.SetActive(false);
         SceneManager.LoadScene(SceneNames.Movement);    
     }
@@ -107,9 +108,8 @@ public class GameManagerBehavior : MonoBehaviour {
 
     public void VisitedSpace(GameObject space) {
         this.nameOfCurrentSpace = space.name;
-        var player = GameObject.FindWithTag(Tags.Player);
         this.numberOfTurnsRemaining--;
-        this.gameState = this.RecordGameState(player);
+        this.gameState = this.RecordGameState();
         if(!this.tutorialMode) {
 			if (this.numberOfTurnsRemaining == 0 && space.GetComponent<SpaceBehavior>().triggeredEvent != SpaceEvent.finalEvent)
 			{
@@ -129,8 +129,9 @@ public class GameManagerBehavior : MonoBehaviour {
         ApplyGameState();
     }
 
-    private GameState RecordGameState(GameObject player)
+    private GameState RecordGameState()
 	{
+        var player = GameObject.FindWithTag(Tags.Player);
         var state = new GameState();
 		var mainCamera = GameObject.FindWithTag(Tags.MainCamera);
 		state.numberOfTurnsRemaining = this.numberOfTurnsRemaining;

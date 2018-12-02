@@ -35,8 +35,10 @@ public class PlayerBehavior : MonoBehaviour {
 
     private void MoveToNextWayPoint() {
         var nextSpace = currentSpace.GetComponent<SpaceBehavior>().nextSpace;
-        this.nextWayPoint = nextSpace;
-        SetPositionAsTarget(nextWayPoint);
+        if(nextSpace != null) {
+			this.nextWayPoint = nextSpace;
+			SetPositionAsTarget(nextWayPoint);    
+        }
     }
 
     private GameObject FindDestination(int numberOfMoves, GameObject space) {

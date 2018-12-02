@@ -88,6 +88,23 @@ public class PlayerBehavior : MonoBehaviour {
 
 		// Move our position a step closer to the target
         transform.position = Vector3.MoveTowards(transform.position, position, step);
+
+        var dist = Vector3.Distance(transform.position, position);
+        var xDist = position.x - transform.position.x;
+        var zDist = position.z - transform.position.z;
+        if (xDist != 0) {
+            var angle = Mathf.Atan(zDist / xDist);
+            var angleDegrees = angle * Mathf.Rad2Deg;
+            if(xDist < 0) {
+				var finalAngle = 180 - angleDegrees;
+				transform.rotation = Quaternion.AngleAxis(finalAngle, Vector3.up);    
+                Debug.Log("X: " + xDist + " Z: " + zDist + " Raw angle: " + angleDegrees + " Final angle: " + finalAngle);
+            } else {
+				var finalAngle = 360 - angleDegrees;
+				transform.rotation = Quaternion.AngleAxis(finalAngle, Vector3.up);
+                Debug.Log("X: " + xDist + " Z: " + zDist + " Raw angle: " + angleDegrees + " Final angle: " + finalAngle);
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)

@@ -81,28 +81,35 @@ public class PlayerBehavior : MonoBehaviour {
         Debug.Log("Set target position to: " + targetPosition);
     }
 
-    void MoveTowards(Vector3 position) {
-		//Move player between game spaces
-		// The step size is equal to speed times frame time.
-		float step = speed * Time.deltaTime;
+    void MoveTowards(Vector3 position)
+    {
+        //Move player between game spaces
+        // The step size is equal to speed times frame time.
+        float step = speed * Time.deltaTime;
 
-		// Move our position a step closer to the target
+        // Move our position a step closer to the target
         transform.position = Vector3.MoveTowards(transform.position, position, step);
+        FacePlayerInDirectionOfMovement(position);
+    }
 
+    private void FacePlayerInDirectionOfMovement(Vector3 position)
+    {
         var dist = Vector3.Distance(transform.position, position);
         var xDist = position.x - transform.position.x;
         var zDist = position.z - transform.position.z;
-        if (xDist != 0) {
+        if (xDist != 0)
+        {
             var angle = Mathf.Atan(zDist / xDist);
             var angleDegrees = angle * Mathf.Rad2Deg;
-            if(xDist < 0) {
-				var finalAngle = 180 - angleDegrees;
-				transform.rotation = Quaternion.AngleAxis(finalAngle, Vector3.up);    
-                Debug.Log("X: " + xDist + " Z: " + zDist + " Raw angle: " + angleDegrees + " Final angle: " + finalAngle);
-            } else {
-				var finalAngle = 360 - angleDegrees;
-				transform.rotation = Quaternion.AngleAxis(finalAngle, Vector3.up);
-                Debug.Log("X: " + xDist + " Z: " + zDist + " Raw angle: " + angleDegrees + " Final angle: " + finalAngle);
+            if (xDist < 0)
+            {
+                var finalAngle = 180 - angleDegrees;
+                transform.rotation = Quaternion.AngleAxis(finalAngle, Vector3.up);
+            }
+            else
+            {
+                var finalAngle = 360 - angleDegrees;
+                transform.rotation = Quaternion.AngleAxis(finalAngle, Vector3.up);
             }
         }
     }

@@ -144,6 +144,7 @@ public class GameManagerBehavior : MonoBehaviour {
 		state.playerPositionX = player.transform.position.x;
 		state.playerPositionY = player.transform.position.y;
 		state.playerPositionZ = player.transform.position.z;
+        state.playerFacingAngle = player.transform.rotation.y;
 
         return state;
 	}
@@ -198,6 +199,8 @@ public class GameManagerBehavior : MonoBehaviour {
 		var space = GameObject.Find(state.nameOfCurrentSpace);
         player.GetComponent<PlayerBehavior>().PlacePlayerAtSpace(space);
 		player.transform.position = new Vector3(state.playerPositionX, state.playerPositionY, state.playerPositionZ);
+        var facingAngle = state.playerFacingAngle * Mathf.Rad2Deg;
+        player.transform.rotation = Quaternion.AngleAxis(facingAngle, Vector3.up);
 
 		//Mark spaces as 'visited'
 		this.VisitedSpace(space.GetComponent<SpaceBehavior>());
@@ -220,6 +223,7 @@ public class GameState {
     public float playerPositionX;
     public float playerPositionY;
     public float playerPositionZ;
+    public float playerFacingAngle;
     public float cameraPositionX;
     public float cameraPositionY;
     public float cameraPositionZ;

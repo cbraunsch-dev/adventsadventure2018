@@ -1,9 +1,11 @@
 ﻿<Properties StartupConfiguration="{9A4F60F8-D775-969F-EF32-ACB4D3005B71}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameManagerBehavior.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameManagerBehavior.cs" Line="142" Column="1" />
-      <File FileName="Assets/Scripts/PlayerBehavior.cs" Line="154" Column="72" />
-      <File FileName="Assets/Scripts/CutsceneBehavior.cs" Line="24" Column="59" />
+      <File FileName="Assets/Scripts/GameManagerBehavior.cs" Line="94" Column="49" />
+      <File FileName="Assets/Scripts/PlayerBehavior.cs" Line="41" Column="10" />
+      <File FileName="Assets/Scripts/CutsceneBehavior.cs" Line="36" Column="1" />
+      <File FileName="Assets/Scripts/CameraBehavior.cs" Line="25" Column="23" />
+      <File FileName="Assets/Scripts/Tags.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

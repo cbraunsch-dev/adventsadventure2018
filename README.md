@@ -11,6 +11,8 @@ The game was made using Unity version 5.6.3p2. To play the game:
 - Open the scene 'TitleScreen'
 - Press on the Play button
 
+If you're on a Mac, you can also try to download the binary in the `Binaries` folder and run that. The binary was compiled under **Mac OS Mojave (10.14)**.
+
 # Rules of the game
 The goal of the game is to get to the end of the map within a set number of turns. The number of turns is shown in the game in the top right under **Days remaining**. In addition to having to reach the end in time, the player also has to collect enough pieces of shell to rebuild the snail's shell. These pieces are scattered throughout the game board. Some can be found by talking to the NPCs in the game while others are found by stopping on specific spaces.
 
